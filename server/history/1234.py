@@ -41,14 +41,14 @@ warnings.filterwarnings("ignore", module="daspy")
 # ==================== 配置信息 ====================
 MQTT_BROKER = "192.168.1.100"
 MQTT_PORT = 8883
-MQTT_TOPIC = "483FDA58BA79-publish"
-MQTT_USERNAME = "User"
-MQTT_PASSWORD = "1234567890"
+MQTT_TOPIC = "***"
+MQTT_USERNAME = "***"
+MQTT_PASSWORD = "***"
 
 QQ_EMAIL_ENABLE = True
-QQ_EMAIL_SENDER = "3809191404@qq.com"
-QQ_EMAIL_PASSWORD = "xcqtffkzkhsgcdcb"
-QQ_EMAIL_RECEIVER = "2028024910@qq.com"
+QQ_EMAIL_SENDER = "***"
+QQ_EMAIL_PASSWORD = "***"
+QQ_EMAIL_RECEIVER = "***"
 QQ_EMAIL_SMTP_SERVER = "smtp.qq.com"
 QQ_EMAIL_SMTP_PORT = 587
 
