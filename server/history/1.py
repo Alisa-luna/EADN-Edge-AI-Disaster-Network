@@ -18,20 +18,20 @@ from email.header import Header
 # ==================== 配置信息 ====================
 MQTT_BROKER = "192.168.1.100"
 MQTT_PORT = 8883
-MQTT_TOPIC = "483FDA58BA79-publish"
-MQTT_USERNAME = "User"
-MQTT_PASSWORD = "1234567890"
+MQTT_TOPIC = "***"
+MQTT_USERNAME = "***"
+MQTT_PASSWORD = "***"
 
 # SiliconFlow配置
 SILICONFLOW_API_URL = "https://api.siliconflow.cn/v1"
-SILICONFLOW_API_KEY = "sk-kyxwdnmgzmcmcyzxbhtibhjvsgjpiefexuyrjkjgmjubyspv"
+SILICONFLOW_API_KEY = "***"
 SILICONFLOW_MODEL = "Qwen/Qwen3-8B"
 
 # QQ邮箱配置（需要开启SMTP服务）
 QQ_EMAIL_ENABLE = True  # 是否启用邮件通知
-QQ_EMAIL_SENDER = "3809191404@qq.com"  # 你的QQ邮箱
-QQ_EMAIL_PASSWORD = "xcqtffkzkhsgcdcb"  # QQ邮箱授权码（不是登录密码）
-QQ_EMAIL_RECEIVER = "2028024910@qq.com"  # 接收通知的邮箱
+QQ_EMAIL_SENDER = "***"  # 你的QQ邮箱
+QQ_EMAIL_PASSWORD = "***"  # QQ邮箱授权码（不是登录密码）
+QQ_EMAIL_RECEIVER = "***"  # 接收通知的邮箱
 QQ_EMAIL_SMTP_SERVER = "smtp.qq.com"
 QQ_EMAIL_SMTP_PORT = 587  # 或 465 (SSL)
 
