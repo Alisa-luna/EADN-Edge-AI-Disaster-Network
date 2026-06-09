@@ -1,0 +1,20 @@
+MCU-Quake Model License
+=======================
+
+The MCU-Quake model was originally published in:
+
+  Geng, Z., Wang, Y., Pan, W. et al.
+  "Real-time discrimination of earthquake signals by integrating 
+   artificial intelligence technology into IoT devices"
+  Communications Earth & Environment 6, 73 (2025)
+  https://doi.org/10.1038/s43247-025-02003-y
+
+The paper is licensed under Creative Commons Attribution 4.0 
+International License (CC BY 4.0).
+https://creativecommons.org/licenses/by/4.0/
+
+The model code is available at:
+https://doi.org/10.57760/sciencedb.10775 (ScienceDB)
+
+This derived work (Edge Impulse exported model files) is distributed 
+under the same CC BY 4.0 license, with attribution to the original authors.
