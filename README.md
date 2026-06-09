@@ -1,4 +1,4 @@
-#  地震预警系统 Earthquake Early Warning System
+#  地震预警系统 (Earthquake Early Warning System)
 
 基于 ESP32 + LoRa + 4G DTU + Edge Impulse AI 的分布式地震预警系统。（仍在持续更新与优化）
 
