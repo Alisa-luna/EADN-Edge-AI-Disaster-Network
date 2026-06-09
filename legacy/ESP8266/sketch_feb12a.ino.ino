@@ -10,8 +10,8 @@ const char *password = "1234567890";
 // MQTT设置
 const int mqtt_port = 8883;
 const char *mqtt_broker = "192.168.1.100";
-const char *mqtt_username = "User";
-const char *mqtt_password = "1234567890";
+const char *mqtt_username = "***";
+const char *mqtt_password = "***";
 
 // 串口设置
 #define STM32_BAUDRATE 460800     // 与STM32通信的高速串口
