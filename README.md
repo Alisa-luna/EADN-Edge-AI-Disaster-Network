@@ -124,7 +124,7 @@
    订阅 MQTT earthquake/alert 主题，收到告警后获取用户 GPS 坐标，计算震中距和 S 波到达时间，以全屏弹窗和系统通知的方式展示倒计时。
    
 
-*致谢*
+**致谢**
 
 · MCU‑Quake 模型
   Real‑time discrimination of earthquake signals by integrating AI technology into IoT devices
@@ -142,10 +142,10 @@
   数据来源：国家地震科学数据中心
   
 
-*许可证*
+**许可证**
 
 本项目采用 MIT License。使用前请阅读各依赖模型和数据源的使用条款。
 
-*免责声明*
+**免责声明**
 
 本系统仅供研究、实验和教育目的，不可作为正式的地震预警设备使用。实际地震预警请以中国地震局或当地应急管理部门发布的官方信息为准。
