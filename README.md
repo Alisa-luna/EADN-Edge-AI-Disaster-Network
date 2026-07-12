@@ -160,7 +160,7 @@ CNN 模型分类为地震后，双编码器快速估算 τc、S‑P 和 Pd，同
 
 ## 致谢
 
-- **MCU‑Quake** — *Real‑time discrimination of earthquake signals by integrating AI technology into IoT devices*, Zhi Geng et al., 2025 | CC BY 4.0 | [ScienceDB](https://www.scidb.cn/)
+- **MCU‑Quake** — *Real‑time discrimination of earthquake signals by integrating AI technology into IoT devices*, Zhi Geng et al., 2025 | CC BY 4.0 | https://www.nature.com/articles/s43247-025-02003-y
 - **PhaseNet / EQTransformer** — [SeisBench](https://github.com/seisbench/seisbench) | MIT License
 - **CENC 实时烈度速报 API** — 数据来源：[国家地震科学数据中心](https://api-cencint-public.nowquake.cn)
 
