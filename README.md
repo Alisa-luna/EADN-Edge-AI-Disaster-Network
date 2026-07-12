@@ -120,14 +120,22 @@
 ├── gateway/              # 网关端 Arduino 代码
 │   ├── sketch_gateway.ino
 │   └── NetworkManager.h  # WiFi/AP/4G 网络管理
-├── server/               # 云端 Python 服务
-│   └── eq_server.py      # MQTT 接收、事件管理、CENC 监听
-├── models/               # 模型训练与导出脚本，包含有对边缘AI的一些探索
-├── app/                  # React Native 手机 APP
-├── docs/                 # 文档与图片
+├── server/
+│   ├── history          #历史服务器版本    
+│   └── 1234567.py      # MQTT 接收、事件管理、CENC 监听（云端 Python 服务）
+├── models/             # 模型训练与导出脚本
+│     ├── AE model      # AE模型
+│     ├── Dual-PhyNet   # 所使用的混合模型
+│     ├── MCU-Quake     # MCU-Quake模型
+│     ├── legacy        # 对AI的探索与总结
+│
+├── app/
+│   ├── APP.tsx            # React Native 手机 APP
+├── legacy/                 # 第一版系统
 └── README.md
 ```
 
+(所有根/第一级/第二级目录下都有Readme，故省略）
 ---
 
 ## 工作原理
