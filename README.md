@@ -44,11 +44,17 @@
 *硬件要求*
 
 组件 型号 用途
+
 节点 MCU ESP32‑S3 (需 PSRAM) AI 推理 + LoRa 通信
+
 加速度计 MPU6050 (DMP 模式) 100Hz 三轴振动采集
+
 节点 LoRa DX‑LR22 (UART) 远距离数据传输
+
 网关 MCU ESP32‑S3 LoRa 接收 + 4G DTU 控制
+
 4G DTU Air780EPM 或类似 蜂窝网络备份与钉钉透传
+
 
 *烧录步骤*
 
