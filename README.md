@@ -4,7 +4,7 @@
 
 ---
 
-系统架构
+**系统架构**
 
 ```
 节点 (ESP32-S3 + MPU6050) ──LoRa Mesh──→ 网关 (ESP32-S3 + 4G DTU) ──MQTT/4G──→ 云端 (Python)
@@ -17,7 +17,7 @@
      └── LoRa 关键参数帧传输 (37字节)
 ```
 
-*核心特性*
+**核心特性**
 
 1、自学习异常检测：每个节点开机后采集 30 秒环境振动，建立分时段统计基线；自编码器 (AE) 实时监控，一旦振动模式超出基线范围，立即触发后续分析。
 
@@ -39,9 +39,9 @@
 
 10、导航与通信网络：网络借助Lora提供节点内短消息发送能力，可通过Web界面进行指定/全网广播发送；Web界面可调起高德地图导航，支持参与点之间的双向导航。
 
-*快速开始*
+**快速开始**
 
-硬件要求
+*硬件要求*
 
 组件 型号 用途
 节点 MCU ESP32‑S3 (需 PSRAM) AI 推理 + LoRa 通信
@@ -50,7 +50,7 @@
 网关 MCU ESP32‑S3 LoRa 接收 + 4G DTU 控制
 4G DTU Air780EPM 或类似 蜂窝网络备份与钉钉透传
 
-烧录步骤
+*烧录步骤*
 
 1. 安装 Arduino IDE 和 ESP32‑S3 开发板支持。
 2. 将所有依赖库放入 libraries/（MPU6050, PubSubClient, Edge Impulse SDK, ArduinoJson 等）。
@@ -59,7 +59,7 @@
 5. 根据实际网络环境修改 config.h 中的 WiFi、MQTT 服务器、钉钉 Token、节点坐标等参数。
 6. 上电后节点会自动建立 AP (EQ_Node_ID, 密码 12345678)，手机可连接并访问 192.168.50.1 查看状态。网关会自动连接 WiFi 或启动 AP (EQ_Gateway) 供配置。
 
-目录结构
+*目录结构*
 
 ```
 ├── node/                 # 节点端 Arduino 代码
@@ -71,13 +71,15 @@
 ├── gateway/              # 网关端 Arduino 代码
 │   ├── sketch_gateway.ino
 │   ├── NetworkManager.h  # WiFi/AP/4G 网络管理
-│   └── pca_matrix_300.h  # (仅旧版兼容)
+│   
 ├── server/               # 云端 Python 服务
 │   ├── eq_server.py      # MQTT 接收、事件管理、CENC 监听
-│   └── earthquake.db     # SQLite 事件数据库
-├── models/               # 模型训练与导出脚本
+│   └── earthquake.db     # SQLite 事件数据库（自动生成）
+├── models/Dual_PhyNet    # 模型训练与导出脚本
 │   ├── train_ae.py       # AE 离线训练
 │   ├── export_weights.py # 权重转 C 头文件
+│   ├── train.py          # 双编码器训练文件
+│   ├── test.py           # 双编码器测试文件
 │   └── generate_data.py  # 合成训练数据
 ├── app/                  # React Native 手机 APP
 ├── docs/                 # 文档与图片
