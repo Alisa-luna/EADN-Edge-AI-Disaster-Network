@@ -81,12 +81,7 @@
 ├── server/               # 云端 Python 服务
 │   ├── eq_server.py      # MQTT 接收、事件管理、CENC 监听
 │   └── earthquake.db     # SQLite 事件数据库（自动生成）
-├── models/Dual_PhyNet    # 模型训练与导出脚本
-│   ├── train_ae.py       # AE 离线训练
-│   ├── export_weights.py # 权重转 C 头文件
-│   ├── train.py          # 双编码器训练文件
-│   ├── test.py           # 双编码器测试文件
-│   └── generate_data.py  # 合成训练数据
+├── models                # 模型训练与导出脚本
 ├── app/                  # React Native 手机 APP
 ├── docs/                 # 文档与图片
 └── README.md
