@@ -79,7 +79,7 @@
 │   ├── NetworkManager.h  # WiFi/AP/4G 网络管理
 │   
 ├── server/               # 云端 Python 服务
-│   ├── eq_server.py      # MQTT 接收、事件管理、CENC 监听
+│   ├── 1234567.py      # MQTT 接收、事件管理、CENC 监听
 │   └── earthquake.db     # SQLite 事件数据库（自动生成）
 ├── models                # 模型训练与导出脚本
 ├── app/                  # React Native 手机 APP
