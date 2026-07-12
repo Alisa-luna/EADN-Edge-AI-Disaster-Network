@@ -1,84 +1,115 @@
-#  基于边缘智能的广域地震监测网络 (Earthquake Early Warning System)
+基于边缘智能的广域地震监测网络 (EEW System)
 
-基于 ESP32 + LoRa + 4G DTU + Edge Impulse AI 的分布式地震预警系统。
-（目前正在被更新中，这一版将会是最后一版传输全量地震波形的架构，下一步将作出如下更新：
-1、替代掉相对不可靠的TCN时序预测模型，转向AE学习正常情况（即loss较大判定为异常）进行反向判定；
-2.不再传输完整的地震信号数据，Lora将只传输33个包含关键参数的浮点数，如Tc、S-P等，且将使用经验公式+神经网络的结合构造），单台站将具备理论上的震中粗定位和烈度、到时预测（地震三要素）
-3、网关将能独自完成震中定位，独立进行多端融合验证、异常节点排除n等任务
-4、服务器代码大幅降低，进一步降低系统对联网的需求，保证极端情况下的可靠性；同时服务器将调用CENE地震速报API，对于国家地震台网发布的可能对当地有影响的地震进行警报发布。
-5、可能会考虑将MPU6050更换成ADXL350，使得测量工具更加专业）
+更新：本次更新后系统将不再传输全量地震波形。节点端集成自编码器 (AE) 异常检测、双编码器神经网络 (τc / S-P / Pd 快速估算) 及 P 波方位角计算，实现单站粗定位。网关支持无公网环境下的独立多节点融合与震中定位。服务器已对接国家地震科学数据中心 (CENC) 实时烈度速报 API，可主动发布官方地震对当地的预估影响。
 
-##  系统架构
+---
+
+系统架构
 
 ```
-
-节点 (ESP32 + MPU6050) ──LoRa──→ 网关 (ESP32-S3 + DTU) ──MQTT──→ 云端 (Python)
-│                                │                              │
-├── 100Hz 加速度采集            ├── PCA 反压缩                  ├── PhaseNet + EQT
-├── Edge Impulse 推理           ├── 状态机投票                  ├── 震中推算
-├── 波形预测                    ├── 钉钉/邮件告警               ├── 烈度分布图
-└── WiFi AP (Web 管理)          └── 4G 透传                     └── 手机 APP 通知
-
+节点 (ESP32-S3 + MPU6050) ──LoRa Mesh──→ 网关 (ESP32-S3 + 4G DTU) ──MQTT/4G──→ 云端 (Python)
+     │                                           │                              │
+     ├── 100Hz 加速度采集                       ├── 多节点融合定位               ├── CENC 实时目录接入
+     ├── AE 自学习异常检测                      ├── WiFi: MQTT 全量上报           ├── 震中网格搜索
+     ├── Edge Impulse CNN 地震确认              ├── 4G: 本地融合 + 钉钉/邮件     ├── 烈度分布图生成
+     ├── 双编码器 τc/S-P/Pd 估算                └── LoRa 时间广播                 ├── 历史事件数据库
+     ├── P 波方位角计算                                                                 └── 手机 App / 钉钉 / 邮件告警
+     └── LoRa 关键参数帧传输 (37字节)
 ```
 
-##  快速开始
+核心特性
 
-### 硬件要求
-- **节点**：ESP32 + MPU6050 + DX-LR22 (LoRa)
-- **网关**：ESP32-S3 + Air780EPM (4G DTU) + DX-LR22 (LoRa)
+· 自学习异常检测：每个节点开机后采集 30 秒环境振动，建立分时段统计基线；自编码器 (AE) 实时监控，一旦振动模式超出基线范围，立即触发后续分析。
+· 多级 AI 确认：AE 异常 → Edge Impulse CNN 地震分类 → 双编码器神经网络快速估算 τc、S-P 走时、峰值加速度 Pd 及 P 波方位角。
+· 单站粗定位：利用 P 波方位角与震中距，节点可大致推算震中位置；多节点数据汇聚后，网关或服务器通过网格搜索交叉定位。
+· 关键参数传输：LoRa 帧仅包含 37 字节地震参数（τc、S-P、Pd、方位角、AI 置信度、AE 分数等），大幅降低带宽需求。
+· 断网独立运行：网关在无 WiFi 时自动切换 4G DTU 备份链路，并运行本地多节点融合算法，独立完成报警推送。
+· 官方数据联动：服务器接入国家地震科学数据中心 API，实时获取官方烈度速报，对可能影响本地的地震主动发布预警。
+· 多渠道告警：通过 MQTT 推送至手机 App、钉钉机器人、QQ 邮箱；手机 App 实时显示震中距和 S 波到达倒计时。
+· 时间同步：通过 WiFi NTP 或 4G 网络时间获取 UTC，并通过 LoRa 广播至所有节点，保证时间戳一致。
+· Web 管理页面：节点和网关均提供 WiFi AP + 网页界面，可查看运行状态、配置 WiFi/钉钉 Token 等。
 
-### 烧录步骤
-1. 安装 Arduino IDE 和 ESP32 开发板支持
-2. 安装所需库：MPU6050, PubSubClient, Edge Impulse SDK 等
-3. 将 `node/` 烧录到节点 ESP32
-4. 将 `gateway/` 烧录到网关 ESP32-S3
-5. 配置 `config.h` 中的 WiFi、MQTT、钉钉 Token 等参数
+快速开始
 
-##  目录结构
+硬件要求
+
+组件 型号 用途
+节点 MCU ESP32‑S3 (需 PSRAM) AI 推理 + LoRa 通信
+加速度计 MPU6050 (DMP 模式) 100Hz 三轴振动采集
+节点 LoRa DX‑LR22 (UART) 远距离数据传输
+网关 MCU ESP32‑S3 LoRa 接收 + 4G DTU 控制
+4G DTU Air780EPM 或类似 蜂窝网络备份与钉钉透传
+
+烧录步骤
+
+1. 安装 Arduino IDE 和 ESP32‑S3 开发板支持。
+2. 将所有依赖库放入 libraries/（MPU6050, PubSubClient, Edge Impulse SDK, ArduinoJson 等）。
+3. 将 node/ 目录下的代码烧录到节点 ESP32‑S3。
+4. 将 gateway/ 目录下的代码烧录到网关 ESP32‑S3。
+5. 根据实际网络环境修改 config.h 中的 WiFi、MQTT 服务器、钉钉 Token、节点坐标等参数。
+6. 上电后节点会自动建立 AP (EQ_Node_ID, 密码 12345678)，手机可连接并访问 192.168.50.1 查看状态。网关会自动连接 WiFi 或启动 AP (EQ_Gateway) 供配置。
+
+目录结构
 
 ```
-
-├── node/               # 节点端 Arduino 代码
-├── gateway/            # 网关端 Arduino 代码
-├── server/             # 云端 Python 处理代码
-├── models/             # TFLite 模型和 PCA 矩阵
-├── app/                # React Native 手机 APP
-├── docs/               # 文档
+├── node/                 # 节点端 Arduino 代码
+│   ├── sketch_node.ino   # 主程序
+│   ├── ae_model.h/cpp    # 自编码器模型及基线管理
+│   ├── ae_weights.h      # AE 预训练权重
+│   ├── dual_encoder_*.h  # 双编码器 (τc/S-P) 权重
+│   └── config.h          # 节点配置
+├── gateway/              # 网关端 Arduino 代码
+│   ├── sketch_gateway.ino
+│   ├── NetworkManager.h  # WiFi/AP/4G 网络管理
+│   └── pca_matrix_300.h  # (仅旧版兼容)
+├── server/               # 云端 Python 服务
+│   ├── eq_server.py      # MQTT 接收、事件管理、CENC 监听
+│   └── earthquake.db     # SQLite 事件数据库
+├── models/               # 模型训练与导出脚本
+│   ├── train_ae.py       # AE 离线训练
+│   ├── export_weights.py # 权重转 C 头文件
+│   └── generate_data.py  # 合成训练数据
+├── app/                  # React Native 手机 APP
+├── docs/                 # 文档与图片
 └── README.md
-
 ```
 
-## 🔧 主要功能
+工作原理
 
--  100Hz 三轴加速度实时采集
--  Edge Impulse 地震检测（Mcu-Quake开源检测模型）
--  Conv1d 全连接扩张卷积 地震波形预测模型(灵感来源于WaveNet空洞卷积模型)
--  LoRa 远距离数据传输 (SF11, BW125)
--  PCA 数据压缩 (900→5, 300→10)
--  4G DTU 透传钉钉告警 + MQTT
--  双模型投票 (PhaseNet + EQTransformer)
--  烈度分布热力图
--  手机 APP 全屏预警弹窗
--  时间同步 (NTP + LoRa 广播)
--  局域网内参与点相互导航和通信、坐标发送
+1. 环境学习
+   节点上电后静默 30 秒，收集当前小时的振动特征，计算中位数和相对范围（聚类基线）。自编码器持续将输入窗口重建，计算高频重建误差、latent 距离和频谱误差，并融合为一个异常分数。
+2. 异常触发
+   当异常分数超出基线范围（低于下界或高于上界）时，节点认为环境发生显著改变，触发 CNN 地震确认。
+3. AI 确认与参数估算
+   Edge Impulse 部署的 CNN 模型（MCU‑Quake）对异常窗口进行分类；若置信度 > 0.5，则调用双编码器神经网络快速输出 τc（特征周期）、S‑P 走时差、峰值加速度 Pd。同时计算 P 波初动方位角。
+4. LoRa 数据传输
+   37 字节关键参数帧通过 LoRa 广播，包含：NTP 时间戳、s_peak、τc、S‑P、震中距、预警时间、AI 置信度、AE 异常分数、P 波方位角、TTL。邻居节点会中继转发，TTL 递减以防止循环。
+5. 网关处理
+   · WiFi 模式：将完整 JSON 通过 MQTT 上传至服务器，由服务器进行多节点定位、烈度图生成和外部告警。
+   · 4G 模式：网关自身运行融合算法，利用多个节点的距离和方位角进行三角定位，直接通过 DTU 发送钉钉/邮件告警。
+6. 云服务器
+   · 接收并存储所有事件到 SQLite。
+   · 多节点触发时，通过网格搜索最小二乘法定位震中，生成烈度分布 HTML 地图。
+   · 每分钟拉取 CENC 最新地震目录，若官方地震对本地预估烈度 ≥ IV 度，主动发布告警。
+7. 手机 App
+   订阅 MQTT earthquake/alert 主题，收到告警后获取用户 GPS 坐标，计算震中距和 S 波到达时间，以全屏弹窗和系统通知的方式展示倒计时。
 
-##  许可证
+致谢
 
-本项目采用 [MIT License](LICENSE)
+· MCU‑Quake 模型
+  Real‑time discrimination of earthquake signals by integrating AI technology into IoT devices
+  Zhi Geng, Yanfei Wang, Wenyong Pan, Caixia Yu, Zhijing Bai, Hongzhou Zhang
+  Communications Earth & Environment, 2025 | CC BY 4.0
+  模型代码：ScienceDB
+· PhaseNet / EQTransformer
+  预训练模型来自 SeisBench | MIT License
+· CENC 实时烈度速报 API
+  数据来源：国家地震科学数据中心
 
-##  免责声明
+许可证
 
-本系统仅供研究和实验目的，不构成正式的地震预警系统。请勿将本系统用于生命财产安全相关的决策。
+本项目采用 MIT License。使用前请阅读各依赖模型和数据源的使用条款。
 
-##  致谢
+免责声明
 
-### MCU-Quake 模型
-- **论文**：[Real-time discrimination of earthquake signals by integrating AI technology into IoT devices](https://doi.org/10.1038/s43247-025-02003-y)
-- **作者**：Zhi Geng, Yanfei Wang, Wenyong Pan, Caixia Yu, Zhijing Bai, Hongzhou Zhang
-- **发表**：Communications Earth & Environment, 2025
-- **许可证**：[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
-- **模型代码**：[ScienceDB](https://doi.org/10.57760/sciencedb.10775)
-
-### PhaseNet / EQTransformer - SeisBench 预训练模型
-  - 来源：[SeisBench](https://github.com/seisbench/seisbench)
-  - 许可证：MIT License
+本系统仅供研究、实验和教育目的，不可作为正式的地震预警设备使用。实际地震预警请以中国地震局或当地应急管理部门发布的官方信息为准。
