@@ -20,15 +20,24 @@
 核心特性
 
 1、自学习异常检测：每个节点开机后采集 30 秒环境振动，建立分时段统计基线；自编码器 (AE) 实时监控，一旦振动模式超出基线范围，立即触发后续分析。
+
 2、多级 AI 确认：AE 异常 → Edge Impulse CNN 地震分类 → 双编码器神经网络快速估算 τc、S-P 走时、峰值加速度 Pd 及 P 波方位角。
+
 3、单站粗定位：利用 P 波方位角与震中距，节点可大致推算震中位置；多节点数据汇聚后，网关或服务器通过网格搜索交叉定位。
+
 4、关键参数传输：LoRa 帧仅包含 37 字节地震参数（τc、S-P、Pd、方位角、AI 置信度、AE 分数等），大幅降低带宽需求。
+
 5、断网独立运行：网关在无 WiFi 时自动切换 4G DTU 备份链路，并运行本地多节点融合算法，独立完成报警推送。
+
 6、官方数据联动：服务器接入国家地震科学数据中心 API，实时获取官方烈度速报，对可能影响本地的地震主动发布预警。
+
 7、多渠道告警：通过 MQTT 推送至手机 App、钉钉机器人、QQ 邮箱；手机 App 实时显示震中距和 S 波到达倒计时。
+
 8、时间同步：通过 WiFi NTP 或 4G 网络时间获取 UTC，并通过 LoRa 广播至所有节点，保证时间戳一致。
+
 9、Web 管理页面：节点和网关均提供 WiFi AP + 网页界面，可查看运行状态、配置 WiFi/钉钉 Token 等。
-10、导航与通信网络：网络借助Lora提供节点内短消息发送能力，可通过Web界面进行指定/全网广播发送；Web界面可调起高德地图导航，支持参与点之间的双向导航
+
+10、导航与通信网络：网络借助Lora提供节点内短消息发送能力，可通过Web界面进行指定/全网广播发送；Web界面可调起高德地图导航，支持参与点之间的双向导航。
 
 快速开始
 
@@ -101,11 +110,17 @@
   Real‑time discrimination of earthquake signals by integrating AI technology into IoT devices
   Zhi Geng, Yanfei Wang, Wenyong Pan, Caixia Yu, Zhijing Bai, Hongzhou Zhang
   Communications Earth & Environment, 2025 | CC BY 4.0
+  
   模型代码：ScienceDB
+  
 · PhaseNet / EQTransformer
+
   预训练模型来自 SeisBench | MIT License
+  
 · CENC 实时烈度速报 API
+
   数据来源：国家地震科学数据中心
+  
 
 许可证
 
