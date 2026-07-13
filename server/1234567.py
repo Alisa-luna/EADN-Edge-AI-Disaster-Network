@@ -39,7 +39,7 @@ logger = logging.getLogger(__name__)
 
 # ==================== 全局配置 ====================
 # MQTT
-MQTT_BROKER = "w8381dbc.ala.cn-hangzhou.emqxsl.cn"
+MQTT_BROKER = "**************************"
 MQTT_PORT = 8883
 MQTT_USERNAME = "User"
 MQTT_PASSWORD = "1234567890"
@@ -50,9 +50,9 @@ MQTT_TOPIC_HEARTBEAT = "earthquake/heartbeat"
 
 # 邮箱
 EMAIL_ENABLE = True
-EMAIL_SENDER = "3809191404@qq.com"
+EMAIL_SENDER = "*********************"
 EMAIL_PASSWORD = "****************"  # 授权码
-EMAIL_RECEIVER = "2028024910@qq.com"
+EMAIL_RECEIVER = "*******************"
 EMAIL_SMTP_SERVER = "smtp.qq.com"
 EMAIL_SMTP_PORT = 587
 
