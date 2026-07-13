@@ -256,7 +256,7 @@ const App = () => {
       username: 'User',
       password: '1234567890',
       clientId: `EQNew_${Math.random().toString(36).substring(7)}`,
-      uri: 'wss://w8381dbc.ala.cn-hangzhou.emqxsl.cn:8084/mqtt',
+      uri: '**********************************',
     };
 
     addLog(`🔄 正在连接 MQTT...`);
