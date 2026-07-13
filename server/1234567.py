@@ -63,8 +63,8 @@ GRID_SEARCH_STEP = 0.01
 GRID_SEARCH_RADIUS = 0.5
 
 # 高德地图
-AMAP_KEY = "a8c640d3f0ea6c654a66cc22e0ed6106"
-AMAP_SECRET = "0705644930985c809183b3554a1f3cb0"
+AMAP_KEY = "***********************"
+AMAP_SECRET = "**********************"
 
 # 服务器位置（用于CENC烈度计算）
 STATION_LAT = 31.2304   # 改为实际坐标
