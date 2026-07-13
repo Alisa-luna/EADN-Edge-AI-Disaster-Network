@@ -128,3 +128,18 @@
 | **可视化** | 高德热力图、震中动画、节点烈度标签 |
 | **事件管理** | 时间窗口关联、融合触发、数据库写入 |
 | **网络管理** | MQTT 重连、SSL 加密、多主题订阅 |
+
+# 服务器日志、HTML、邮件功能展示（仅部分展示）
+
+*服务器日志*
+
+<img width="1349" height="1023" alt="屏幕截图 2026-07-13 122113" src="https://github.com/user-attachments/assets/76e3154d-6443-4d07-b69b-9695a19ced44" />
+
+*HTML界面*
+
+<img width="660" height="1434" alt="IMG_4459 (1)" src="https://github.com/user-attachments/assets/9ca5ce67-fa4f-407b-ba7c-07870bccf86b" />
+
+*邮件界面*
+
+<img width="660" height="1434" alt="IMG_4470" src="https://github.com/user-attachments/assets/7851db1f-2ceb-40ad-a1a6-d2f2af56b855" />
+
