@@ -1743,7 +1743,7 @@ String generateWebPage() {
         var currentLat = window.gwLat || 31.2304;
         var currentLng = window.gwLng || 121.4737;
         var currentZoom = 15;
-        var amapKey = 'a8c640d3f0ea6c654a66cc22e0ed6106';  // 你的高德Key
+        var amapKey = '************don'tusemyapi**********';  // 你的高德Key
 
         function fetchAltitudeForNode() {
     var lat = parseFloat(document.getElementById('newLat').value);
@@ -1834,14 +1834,14 @@ String generateWebPage() {
             }
             _amap_script_loaded = true;
             var script = document.createElement('script');
-            script.src = 'https://webapi.amap.com/maps?v=2.0&key=a8c640d3f0ea6c654a66cc22e0ed6106';
+            script.src = 'https://webapi.amap.com/maps?v=2.0&key=************';
              script.onload = function() {
                 _amap_ready = true;
                 if (callback) callback();
         };
             document.head.appendChild(script);
         }
-
+        // 受不了了写个注释，你调用我api干啥？我本来说你用了就用了，一天还调用600多次，给我超限警告都整出来了，我到时候给别人演示调用不了api咋整？？？
         // 原来的 initMap 函数不需要改，只需要调用上述异步加载
         var mapReady = false;
         function tryInitMap() {
