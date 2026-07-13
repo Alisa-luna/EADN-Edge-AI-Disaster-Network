@@ -59,3 +59,8 @@
 | **用户界面** | 震中手动输入、来源显示、阈值设置、实时日志、定位方式显示 |
 | **数据持久化** | 震中坐标存储、配置存储、启动自动加载 |
 
+
+## APP 告警界面展示
+
+<img width="989" height="1550" alt="36" src="https://github.com/user-attachments/assets/852c6772-b591-4775-aede-a4d3d1ed0816" />
+
