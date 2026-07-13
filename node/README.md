@@ -86,3 +86,8 @@
 | **定位验证** | 单站方位角推算、三边校验、网关坐标接收 |
 | **Web 接口** | AP 热点、管理页面、API、消息、导航 |
 | **数据采集** | 100Hz 采样、DMP 校正、滤波、缓冲 |
+
+
+## 节点web界面展示（仅部分展示）
+
+<img width="660" height="1434" alt="IMG_4540" src="https://github.com/user-attachments/assets/0fff4d17-013b-4f1a-be10-f44d401e9436" />
