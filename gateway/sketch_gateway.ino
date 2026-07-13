@@ -62,7 +62,7 @@
 #define DTU_CMD_SAVE "config,set,save\r\n"
 
 // ==================== MQTT ====================
-#define MQTT_SERVER "w8381dbc.ala.cn-hangzhou.emqxsl.cn"
+#define MQTT_SERVER "*****************************"
 #define MQTT_PORT 8883
 #define MQTT_USER "User"
 #define MQTT_PASSWORD "1234567890"
